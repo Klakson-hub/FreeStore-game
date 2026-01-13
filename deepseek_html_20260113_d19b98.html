@@ -1,0 +1,2911 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freestore - Бесплатная платформа для игр</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #0d1b2a;
+            --secondary: #1b3a4b;
+            --accent: #2a9d8f;
+            --light: #e0e1dd;
+            --dark: #0a141e;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+            --admin: #e63946;
+            --highlight: #ffd166;
+        }
+
+        body {
+            background-color: var(--primary);
+            color: var(--light);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark);
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: var(--accent);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            background: linear-gradient(90deg, var(--accent), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+            background-color: rgba(42, 157, 143, 0.1);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-actions i {
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 8px;
+            border-radius: 50%;
+        }
+
+        .user-actions i:hover {
+            color: var(--accent);
+            background-color: rgba(42, 157, 143, 0.1);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--secondary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .user-profile:hover {
+            background-color: #234a5c;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .admin-badge {
+            background-color: var(--admin);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+        }
+
+        /* Search bar */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #search-input {
+            padding: 10px 15px;
+            padding-right: 40px;
+            background-color: var(--secondary);
+            border: 1px solid #3d4c5e;
+            border-radius: 20px;
+            color: var(--light);
+            font-size: 1rem;
+            width: 250px;
+            transition: width 0.3s;
+        }
+
+        #search-input:focus {
+            width: 300px;
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        #search-btn {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--light);
+            cursor: pointer;
+        }
+
+        /* Hero section */
+        .hero {
+            background: linear-gradient(rgba(10, 20, 30, 0.9), rgba(10, 20, 30, 0.9)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: white;
+            background: linear-gradient(90deg, var(--accent), var(--highlight));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--light);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--accent);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: #21867a;
+            transform: translateY(-3px);
+        }
+
+        /* Main content */
+        main {
+            padding: 40px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: white;
+            border-left: 4px solid var(--accent);
+            padding-left: 15px;
+        }
+
+        .section-title.admin {
+            border-left-color: var(--admin);
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--secondary);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.1rem;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .tab:hover {
+            color: var(--accent);
+        }
+
+        .tab.active {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Games grid */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .game-card {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+
+        .game-image {
+            height: 160px;
+            background-color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--accent);
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .game-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .game-status.pending {
+            background-color: var(--warning);
+        }
+
+        .game-status.approved {
+            background-color: var(--success);
+        }
+
+        .game-status.rejected {
+            background-color: var(--danger);
+        }
+
+        .game-info {
+            padding: 20px;
+            position: relative;
+        }
+
+        .game-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .game-description {
+            font-size: 0.95rem;
+            color: #a3b8c6;
+            margin-bottom: 20px;
+            height: 60px;
+            overflow: hidden;
+        }
+
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .game-author {
+            color: var(--accent);
+        }
+
+        .game-rating {
+            color: var(--highlight);
+        }
+
+        .game-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-download {
+            background-color: var(--accent);
+            color: white;
+            flex-grow: 1;
+        }
+
+        .btn-download:hover {
+            background-color: #21867a;
+        }
+
+        .btn-play {
+            background-color: var(--highlight);
+            color: var(--dark);
+            flex-grow: 1;
+        }
+
+        .btn-play:hover {
+            background-color: #ffc145;
+        }
+
+        .btn-details {
+            background-color: transparent;
+            color: var(--light);
+            border: 1px solid var(--light);
+        }
+
+        .btn-details:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-admin {
+            background-color: var(--admin);
+            color: white;
+            margin: 5px;
+        }
+
+        .btn-admin:hover {
+            background-color: #d32f2f;
+        }
+
+        /* Upload section */
+        .upload-section {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--accent);
+        }
+
+        .upload-form {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: white;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            padding: 12px 15px;
+            background-color: var(--primary);
+            border: 1px solid #3d4c5e;
+            border-radius: 4px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            border: 2px dashed #3d4c5e;
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: var(--accent);
+        }
+
+        .file-upload i {
+            font-size: 3rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .file-upload p {
+            color: #a3b8c6;
+        }
+
+        .btn-upload {
+            background-color: var(--accent);
+            color: white;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            align-self: flex-start;
+        }
+
+        .btn-upload:hover {
+            background-color: #21867a;
+        }
+
+        /* Profile section */
+        .profile-section {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid var(--accent);
+        }
+
+        .profile-avatar:hover::after {
+            content: 'Изменить';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .profile-info h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .profile-info p {
+            color: #a3b8c6;
+            max-width: 600px;
+        }
+
+        /* Reviews */
+        .reviews-section {
+            margin-top: 40px;
+        }
+
+        .review-form {
+            background-color: var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid var(--secondary);
+        }
+
+        .review-form textarea {
+            width: 100%;
+            min-height: 100px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background-color: var(--secondary);
+            border: 1px solid #3d4c5e;
+            border-radius: 4px;
+            color: var(--light);
+            font-size: 1rem;
+        }
+
+        .review {
+            background-color: var(--primary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 3px solid var(--accent);
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .review-rating {
+            color: var(--highlight);
+        }
+
+        /* Auth modals */
+        .auth-modal, .profile-modal, .support-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-content, .profile-content, .support-content {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: 15px;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .auth-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .terms {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .terms input {
+            width: 20px;
+            height: 20px;
+        }
+
+        .close-auth, .close-profile, .close-support {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-auth:hover, .close-profile:hover, .close-support:hover {
+            color: var(--accent);
+        }
+
+        /* Support chat */
+        .chat-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: var(--primary);
+            border-radius: 8px;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .chat-message.bot {
+            background-color: var(--accent);
+            color: white;
+            align-self: flex-start;
+            margin-right: auto;
+        }
+
+        .chat-message.user {
+            background-color: var(--highlight);
+            color: var(--dark);
+            align-self: flex-end;
+            margin-left: auto;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        #chat-input {
+            flex-grow: 1;
+            padding: 12px;
+            background-color: var(--primary);
+            border: 1px solid #3d4c5e;
+            border-radius: 20px;
+            color: var(--light);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            padding: 40px 0 20px;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #a3b8c6;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #3d4c5e;
+            color: #a3b8c6;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--secondary);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.8rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--accent);
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 4px;
+            background-color: var(--success);
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.error {
+            background-color: var(--danger);
+        }
+
+        .notification.warning {
+            background-color: var(--warning);
+        }
+
+        .notification.info {
+            background-color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                gap: 10px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .games-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .upload-section, .profile-section {
+                padding: 25px;
+            }
+            
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            #search-input {
+                width: 200px;
+            }
+            
+            #search-input:focus {
+                width: 250px;
+            }
+        }
+
+        /* Downloaded games */
+        .downloaded-game {
+            background-color: var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-left: 4px solid var(--accent);
+        }
+
+        .downloaded-game-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .downloaded-game-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            background-color: #000;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .no-games {
+            text-align: center;
+            padding: 50px;
+            color: #a3b8c6;
+            font-size: 1.2rem;
+        }
+
+        .admin-controls {
+            background-color: var(--dark);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border: 1px solid var(--admin);
+        }
+
+        /* Moderation queue */
+        .moderation-game {
+            background-color: var(--secondary);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Game iframe */
+        #game-iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 8px;
+            background-color: #000;
+        }
+
+        .game-frame-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .close-game-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        /* Loading animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-gamepad"></i>
+                <h1>Freestore</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#"><i class="fas fa-home"></i> Главная</a></li>
+                    <li><a href="#games"><i class="fas fa-th-large"></i> Игры</a></li>
+                    <li><a href="#upload"><i class="fas fa-cloud-upload-alt"></i> Загрузить игру</a></li>
+                    <li><a href="#library"><i class="fas fa-download"></i> Мои игры</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Поиск игр...">
+                    <button id="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <i class="fas fa-shopping-cart" id="cart-btn" title="Корзина"></i>
+                <i class="fas fa-headset" id="support-btn" title="Поддержка"></i>
+                <div class="user-profile" id="user-profile-btn">
+                    <div class="user-avatar" id="user-avatar">G</div>
+                    <span id="username">Гость</span>
+                    <span id="admin-badge" class="admin-badge" style="display: none;">ADMIN</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero section -->
+    <section class="hero">
+        <div class="container">
+            <h2>Бесплатная платформа для игр</h2>
+            <p>Загружайте свои игры, делитесь ими с сообществом и открывайте для себя удивительные проекты независимых разработчиков. Всё абсолютно бесплатно!</p>
+            <a href="#upload" class="cta-button" id="main-cta">Загрузить свою игру</a>
+        </div>
+    </section>
+
+    <!-- Main content -->
+    <main class="container">
+        <!-- Tabs -->
+        <div class="tabs" id="main-tabs">
+            <button class="tab active" data-tab="games">Все игры</button>
+            <button class="tab" data-tab="library">Мои игры</button>
+            <button class="tab" data-tab="upload">Загрузить игру</button>
+            <button class="tab" data-tab="profile">Профиль</button>
+            <button class="tab admin-only" data-tab="admin" style="display: none;">Модерация</button>
+        </div>
+
+        <!-- Games section -->
+        <div class="tab-content active" id="games-tab">
+            <h2 class="section-title" id="games">Популярные игры</h2>
+            <div class="games-grid" id="games-grid">
+                <!-- Game cards will be generated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Library section -->
+        <div class="tab-content" id="library-tab">
+            <h2 class="section-title">Мои игры</h2>
+            <div id="library-content">
+                <!-- Downloaded games will appear here -->
+            </div>
+        </div>
+
+        <!-- Upload section -->
+        <div class="tab-content" id="upload-tab">
+            <h2 class="section-title" id="upload">Загрузить свою игру</h2>
+            <section class="upload-section">
+                <form class="upload-form" id="upload-form">
+                    <div class="form-group">
+                        <label for="game-title">Название игры</label>
+                        <input type="text" id="game-title" placeholder="Введите название вашей игры" required>
+                        <small id="title-warning" style="color: var(--warning); display: none;">Название содержит недопустимые слова</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-description">Описание игры</label>
+                        <textarea id="game-description" placeholder="Опишите вашу игру, её геймплей, особенности и требования" required></textarea>
+                        <small id="desc-warning" style="color: var(--warning); display: none;">Описание содержит недопустимые слова</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="game-category">Категория</label>
+                        <select id="game-category" required>
+                            <option value="">Выберите категорию</option>
+                            <option value="Аркада">Аркада</option>
+                            <option value="Головоломка">Головоломка</option>
+                            <option value="Платформер">Платформер</option>
+                            <option value="Стратегия">Стратегия</option>
+                            <option value="Ролевая">Ролевая игра</option>
+                            <option value="Симулятор">Симулятор</option>
+                            <option value="Гонки">Гонки</option>
+                            <option value="Спорт">Спорт</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Загрузка файлов игры (только .html или .zip)</label>
+                        <div class="file-upload" id="file-upload-area">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Перетащите файлы игры сюда или нажмите для выбора</p>
+                            <p><small>Поддерживаются: .html, .zip (макс. 50MB)</small></p>
+                        </div>
+                        <input type="file" id="game-files" accept=".html,.zip" hidden>
+                    </div>
+                    <div class="form-group">
+                        <label>Изображение игры (опционально)</label>
+                        <div class="file-upload" id="image-upload-area">
+                            <i class="fas fa-image"></i>
+                            <p>Загрузите изображение для игры</p>
+                            <p><small>Поддерживаются: .jpg, .png, .gif (макс. 5MB)</small></p>
+                        </div>
+                        <input type="file" id="game-image" accept="image/*" hidden>
+                    </div>
+                    <button type="submit" class="btn btn-upload"><i class="fas fa-paper-plane"></i> Отправить на модерацию</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Profile section -->
+        <div class="tab-content" id="profile-tab">
+            <div class="profile-section">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profile-avatar-large">G</div>
+                    <div class="profile-info">
+                        <h2 id="profile-name">Гость</h2>
+                        <p id="profile-bio">Зарегистрируйтесь, чтобы добавить описание профиля</p>
+                        <p id="profile-stats">Игр загружено: 0 | Отзывов: 0</p>
+                    </div>
+                </div>
+                <button class="btn btn-upload" id="edit-profile-btn"><i class="fas fa-edit"></i> Редактировать профиль</button>
+                
+                <!-- Reviews section -->
+                <div class="reviews-section">
+                    <h3>Мои отзывы</h3>
+                    <div id="user-reviews">
+                        <!-- User reviews will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin moderation section -->
+        <div class="tab-content" id="admin-tab">
+            <h2 class="section-title admin">Панель модерации</h2>
+            
+            <div class="admin-controls">
+                <h3><i class="fas fa-clock"></i> Ожидают модерации</h3>
+                <div id="moderation-queue">
+                    <!-- Games awaiting moderation -->
+                </div>
+            </div>
+
+            <div class="admin-controls">
+                <h3><i class="fas fa-users"></i> Все пользователи</h3>
+                <div id="users-list">
+                    <!-- Users list -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>Freestore</h3>
+                    <p>Бесплатная платформа для загрузки и распространения игр от независимых разработчиков.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Быстрые ссылки</h3>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-home"></i> Главная</a></li>
+                        <li><a href="#games"><i class="fas fa-th-large"></i> Каталог игр</a></li>
+                        <li><a href="#upload"><i class="fas fa-cloud-upload-alt"></i> Загрузить игру</a></li>
+                        <li><a href="#"><i class="fas fa-file-contract"></i> Правила сообщества</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Поддержка</h3>
+                    <ul>
+                        <li><a href="#" id="footer-support-btn"><i class="fas fa-headset"></i> Онлайн поддержка</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                        <li><a href="#"><i class="fas fa-envelope"></i> Контакты</a></li>
+                        <li><a href="#"><i class="fas fa-exclamation-triangle"></i> Сообщить о проблеме</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Соцсети</h3>
+                    <ul>
+                        <li><a href="#"><i class="fab fa-discord"></i> Discord</a></li>
+                        <li><a href="#"><i class="fab fa-telegram"></i> Telegram</a></li>
+                        <li><a href="#"><i class="fab fa-youtube"></i> YouTube</a></li>
+                        <li><a href="#"><i class="fab fa-vk"></i> VK</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Freestore. Все права защищены. Все игры на сайте распространяются бесплатно.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Auth modal -->
+    <div class="auth-modal" id="auth-modal">
+        <div class="auth-content">
+            <span class="close-auth" id="close-auth">&times;</span>
+            <div class="auth-tabs">
+                <button class="auth-tab active" data-form="login">Вход</button>
+                <button class="auth-tab" data-form="register">Регистрация</button>
+            </div>
+            
+            <form class="auth-form active" id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Имя пользователя</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Пароль</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-upload"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            </form>
+            
+            <form class="auth-form" id="register-form">
+                <div class="form-group">
+                    <label for="register-username">Имя пользователя</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Пароль</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Подтверждение пароля</label>
+                    <input type="password" id="register-confirm" required>
+                </div>
+                <div class="terms">
+                    <input type="checkbox" id="agree-terms" required>
+                    <label for="agree-terms">Я согласен с условиями использования и политикой конфиденциальности</label>
+                </div>
+                <button type="submit" class="btn btn-upload"><i class="fas fa-user-plus"></i> Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile edit modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-content">
+            <span class="close-profile" id="close-profile">&times;</span>
+            <h2 class="modal-title">Редактирование профиля</h2>
+            
+            <form id="profile-form">
+                <div class="form-group">
+                    <label>Аватар</label>
+                    <div class="file-upload" id="avatar-upload-area">
+                        <i class="fas fa-user-circle"></i>
+                        <p>Загрузите новый аватар</p>
+                        <p><small>Поддерживаются: .jpg, .png (макс. 2MB)</small></p>
+                    </div>
+                    <input type="file" id="avatar-file" accept="image/*" hidden>
+                </div>
+                <div class="form-group">
+                    <label for="edit-name">Имя пользователя</label>
+                    <input type="text" id="edit-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-bio">Описание профиля</label>
+                    <textarea id="edit-bio" placeholder="Расскажите о себе..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-upload"><i class="fas fa-save"></i> Сохранить изменения</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Support modal -->
+    <div class="support-modal" id="support-modal">
+        <div class="support-content">
+            <span class="close-support" id="close-support">&times;</span>
+            <h2 class="modal-title"><i class="fas fa-headset"></i> Поддержка</h2>
+            
+            <div class="chat-container" id="chat-container">
+                <div class="chat-message bot">
+                    <strong>Бот поддержки:</strong> Привет! Я бот поддержки Freestore. Чем могу помочь?
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Введите ваш вопрос...">
+                <button class="btn btn-upload" id="send-chat-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game details modal -->
+    <div class="modal" id="game-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal">&times;</span>
+            <h2 class="modal-title" id="modal-game-title">Название игры</h2>
+            <div class="game-meta">
+                <div class="game-author" id="modal-game-author">Автор: User123</div>
+                <div class="game-rating" id="modal-game-rating">Рейтинг: ★★★★☆</div>
+            </div>
+            <p id="modal-game-description">Описание игры</p>
+            <div class="game-meta">
+                <div id="modal-game-category">Категория: Аркада</div>
+                <div id="modal-game-size">Размер: 125 MB</div>
+                <div id="modal-game-downloads">Загрузок: 1,234</div>
+            </div>
+            
+            <!-- Reviews in modal -->
+            <div class="reviews-section">
+                <h3>Отзывы</h3>
+                <div class="review-form" id="review-form">
+                    <textarea placeholder="Оставьте свой отзыв..." id="review-text"></textarea>
+                    <div class="form-group">
+                        <label>Оценка:</label>
+                        <select id="review-rating">
+                            <option value="5">★★★★★</option>
+                            <option value="4">★★★★☆</option>
+                            <option value="3">★★★☆☆</option>
+                            <option value="2">★★☆☆☆</option>
+                            <option value="1">★☆☆☆☆</option>
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-upload" id="submit-review"><i class="fas fa-star"></i> Оставить отзыв</button>
+                </div>
+                <div id="game-reviews">
+                    <!-- Reviews will be added here -->
+                </div>
+            </div>
+            
+            <div class="game-actions" style="margin-top: 30px;">
+                <button class="btn btn-download" id="modal-download-btn"><i class="fas fa-download"></i> Скачать игру</button>
+                <button class="btn btn-play" id="modal-play-btn" style="display: none;"><i class="fas fa-play"></i> Играть онлайн</button>
+                <button class="btn btn-details" id="modal-close-btn"><i class="fas fa-times"></i> Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game iframe modal -->
+    <div class="modal" id="game-iframe-modal">
+        <div class="modal-content" style="max-width: 900px; padding: 10px;">
+            <div class="game-frame-container">
+                <button class="close-game-btn" id="close-game-btn"><i class="fas fa-times"></i> Закрыть игру</button>
+                <iframe id="game-iframe" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Data storage
+        let games = JSON.parse(localStorage.getItem('games')) || [
+            {
+                id: 1,
+                title: "Космическое приключение",
+                description: "Захватывающий шутер с видом сверху, где вы управляете космическим кораблем и сражаетесь с вражескими захватчиками.",
+                author: "SpaceDev",
+                rating: 4.2,
+                category: "Аркада",
+                size: "85 MB",
+                downloads: 2541,
+                icon: "fas fa-rocket",
+                image: "https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                status: "approved",
+                isWebGame: true,
+                webGameUrl: "#",
+                gameFile: "space_game.html",
+                fileContent: `<!DOCTYPE html>
+<html>
+<head>
+    <title>Космическое приключение</title>
+    <style>
+        body { margin: 0; padding: 0; background: #000; color: #fff; font-family: Arial; text-align: center; }
+        canvas { border: 2px solid #2a9d8f; display: block; margin: 20px auto; background: #111; }
+        h1 { color: #2a9d8f; margin-top: 20px; }
+        .controls { margin: 20px; color: #ccc; }
+    </style>
+</head>
+<body>
+    <h1>🚀 Космическое приключение</h1>
+    <div class="controls">Управление: Стрелки ←↑→↓ | Пробел - стрельба</div>
+    <canvas id="gameCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let score = 0;
+        
+        // Игрок
+        const player = {
+            x: canvas.width/2 - 25,
+            y: canvas.height - 60,
+            width: 50,
+            height: 50,
+            speed: 5,
+            color: '#2a9d8f'
+        };
+        
+        // Пули
+        let bullets = [];
+        
+        // Враги
+        let enemies = [];
+        
+        // Управление
+        const keys = {};
+        
+        canvas.addEventListener('keydown', (e) => keys[e.key] = true);
+        canvas.addEventListener('keyup', (e) => keys[e.key] = false);
+        canvas.focus();
+        
+        function createEnemy() {
+            enemies.push({
+                x: Math.random() * (canvas.width - 30),
+                y: -30,
+                width: 30,
+                height: 30,
+                speed: 2 + Math.random() * 2,
+                color: '#e63946'
+            });
+        }
+        
+        function update() {
+            // Движение игрока
+            if (keys['ArrowLeft'] && player.x > 0) player.x -= player.speed;
+            if (keys['ArrowRight'] && player.x < canvas.width - player.width) player.x += player.speed;
+            if (keys['ArrowUp'] && player.y > 0) player.y -= player.speed;
+            if (keys['ArrowDown'] && player.y < canvas.height - player.height) player.y += player.speed;
+            
+            // Стрельба
+            if (keys[' ']) {
+                bullets.push({
+                    x: player.x + player.width/2 - 2.5,
+                    y: player.y,
+                    width: 5,
+                    height: 10,
+                    speed: 7,
+                    color: '#ffd166'
+                });
+                keys[' '] = false;
+            }
+            
+            // Обновление пуль
+            bullets = bullets.filter(b => {
+                b.y -= b.speed;
+                return b.y > 0;
+            });
+            
+            // Обновление врагов
+            enemies.forEach(enemy => enemy.y += enemy.speed);
+            
+            // Проверка столкновений
+            bullets.forEach((bullet, bi) => {
+                enemies.forEach((enemy, ei) => {
+                    if (bullet.x < enemy.x + enemy.width &&
+                        bullet.x + bullet.width > enemy.x &&
+                        bullet.y < enemy.y + enemy.height &&
+                        bullet.y + bullet.height > enemy.y) {
+                        bullets.splice(bi, 1);
+                        enemies.splice(ei, 1);
+                        score += 100;
+                    }
+                });
+            });
+            
+            // Создание новых врагов
+            if (Math.random() < 0.02) createEnemy();
+        }
+        
+        function draw() {
+            // Очистка
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Игрок
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            
+            // Пули
+            bullets.forEach(b => {
+                ctx.fillStyle = b.color;
+                ctx.fillRect(b.x, b.y, b.width, b.height);
+            });
+            
+            // Враги
+            enemies.forEach(enemy => {
+                ctx.fillStyle = enemy.color;
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            });
+            
+            // Счет
+            ctx.fillStyle = '#fff';
+            ctx.font = '20px Arial';
+            ctx.fillText('Счет: ' + score, 10, 30);
+        }
+        
+        function gameLoop() {
+            update();
+            draw();
+            requestAnimationFrame(gameLoop);
+        }
+        
+        setInterval(createEnemy, 1000);
+        gameLoop();
+    <\/script>
+</body>
+</html>`
+            },
+            {
+                id: 2,
+                title: "Лабиринт иллюзий",
+                description: "Сложная головоломка с меняющимися стенами и оптическими иллюзиями. Найдите выход из лабиринта, используя логику.",
+                author: "PuzzleMaster",
+                rating: 4.8,
+                category: "Головоломка",
+                size: "45 MB",
+                downloads: 3872,
+                icon: "fas fa-puzzle-piece",
+                status: "approved",
+                isWebGame: true,
+                gameFile: "maze_game.html",
+                fileContent: `<!DOCTYPE html>
+<html>
+<head>
+    <title>Лабиринт иллюзий</title>
+    <style>
+        body { margin: 0; padding: 0; background: #1a1a2e; color: #fff; font-family: Arial; text-align: center; }
+        canvas { border: 2px solid #2a9d8f; display: block; margin: 20px auto; background: #162447; }
+        h1 { color: #2a9d8f; margin-top: 20px; }
+        .controls { margin: 20px; color: #ccc; }
+    </style>
+</head>
+<body>
+    <h1>🧩 Лабиринт иллюзий</h1>
+    <div class="controls">Управление: Стрелки ←↑→↓ для движения</div>
+    <canvas id="mazeCanvas" width="600" height="600"></canvas>
+    <div id="timer">Время: 0 сек</div>
+    <script>
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 40;
+        const rows = 15;
+        const cols = 15;
+        let player = { x: 1, y: 1 };
+        let exit = { x: cols-2, y: rows-2 };
+        let time = 0;
+        let timerInterval;
+        
+        // Генерация лабиринта
+        let maze = generateMaze(cols, rows);
+        
+        function generateMaze(width, height) {
+            let maze = Array(height).fill().map(() => Array(width).fill(1));
+            
+            function carve(x, y) {
+                maze[y][x] = 0;
+                const directions = [[1,0],[-1,0],[0,1],[0,-1]];
+                directions.sort(() => Math.random() - 0.5);
+                
+                for (let [dx, dy] of directions) {
+                    const nx = x + dx*2, ny = y + dy*2;
+                    if (nx > 0 && nx < width-1 && ny > 0 && ny < height-1 && maze[ny][nx] === 1) {
+                        maze[y+dy][x+dx] = 0;
+                        carve(nx, ny);
+                    }
+                }
+            }
+            
+            carve(1, 1);
+            maze[exit.y][exit.x] = 0;
+            return maze;
+        }
+        
+        function drawMaze() {
+            ctx.fillStyle = '#0f3460';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < cols; x++) {
+                    if (maze[y][x] === 1) {
+                        ctx.fillStyle = '#1a1a2e';
+                        ctx.fillRect(x*cellSize, y*cellSize, cellSize, cellSize);
+                        ctx.strokeStyle = '#2a9d8f';
+                        ctx.strokeRect(x*cellSize, y*cellSize, cellSize, cellSize);
+                    }
+                }
+            }
+            
+            // Игрок
+            ctx.fillStyle = '#2a9d8f';
+            ctx.beginPath();
+            ctx.arc(player.x*cellSize + cellSize/2, player.y*cellSize + cellSize/2, cellSize/3, 0, Math.PI*2);
+            ctx.fill();
+            
+            // Выход
+            ctx.fillStyle = '#ffd166';
+            ctx.beginPath();
+            ctx.arc(exit.x*cellSize + cellSize/2, exit.y*cellSize + cellSize/2, cellSize/3, 0, Math.PI*2);
+            ctx.fill();
+        }
+        
+        function updateTimer() {
+            time++;
+            document.getElementById('timer').textContent = 'Время: ' + time + ' сек';
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            let nx = player.x, ny = player.y;
+            
+            switch(e.key) {
+                case 'ArrowUp': ny--; break;
+                case 'ArrowDown': ny++; break;
+                case 'ArrowLeft': nx--; break;
+                case 'ArrowRight': nx++; break;
+            }
+            
+            if (nx >= 0 && nx < cols && ny >= 0 && ny < rows && maze[ny][nx] === 0) {
+                player.x = nx;
+                player.y = ny;
+                drawMaze();
+                
+                // Проверка победы
+                if (player.x === exit.x && player.y === exit.y) {
+                    clearInterval(timerInterval);
+                    alert('🎉 Поздравляем! Вы прошли лабиринт за ' + time + ' секунд!');
+                }
+            }
+        });
+        
+        drawMaze();
+        timerInterval = setInterval(updateTimer, 1000);
+    <\/script>
+</body>
+</html>`
+            }
+        ];
+
+        let users = JSON.parse(localStorage.getItem('users')) || [
+            {
+                id: 1,
+                username: "Admin",
+                password: "admin123",
+                isAdmin: true,
+                avatar: "",
+                bio: "Главный администратор Freestore",
+                uploadedGames: [],
+                downloadedGames: [],
+                reviews: []
+            }
+        ];
+
+        let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+        let reviews = JSON.parse(localStorage.getItem('reviews')) || [];
+        let downloadedGames = JSON.parse(localStorage.getItem('downloadedGames')) || {};
+
+        // Расширенный фильтр плохих слов
+        const badWords = [
+            "бля", "хуй", "пизда", "ебал", "ебать", "ебаная", "ебаный", 
+            "пиздец", "нах", "гондон", "мудак", "сука", "чмо", "долбаёб",
+            "asshole", "fuck", "shit", "bitch", "cunt", "dick", "pussy",
+            // Добавьте больше слов при необходимости
+        ];
+        
+        // DOM elements
+        const gamesGrid = document.getElementById('games-grid');
+        const uploadForm = document.getElementById('upload-form');
+        const fileUploadArea = document.getElementById('file-upload-area');
+        const gameFilesInput = document.getElementById('game-files');
+        const imageUploadArea = document.getElementById('image-upload-area');
+        const gameImageInput = document.getElementById('game-image');
+        const notification = document.getElementById('notification');
+        const gameModal = document.getElementById('game-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modalDownloadBtn = document.getElementById('modal-download-btn');
+        const modalPlayBtn = document.getElementById('modal-play-btn');
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthBtn = document.getElementById('close-auth');
+        const profileModal = document.getElementById('profile-modal');
+        const closeProfileBtn = document.getElementById('close-profile');
+        const userProfileBtn = document.getElementById('user-profile-btn');
+        const editProfileBtn = document.getElementById('edit-profile-btn');
+        const libraryContent = document.getElementById('library-content');
+        const adminTab = document.querySelector('.admin-only');
+        const mainTabs = document.getElementById('main-tabs');
+        const moderationQueue = document.getElementById('moderation-queue');
+        const usersList = document.getElementById('users-list');
+        const userReviews = document.getElementById('user-reviews');
+        const profileForm = document.getElementById('profile-form');
+        const avatarUploadArea = document.getElementById('avatar-upload-area');
+        const avatarFileInput = document.getElementById('avatar-file');
+        const searchInput = document.getElementById('search-input');
+        const searchBtn = document.getElementById('search-btn');
+        const cartBtn = document.getElementById('cart-btn');
+        const supportBtn = document.getElementById('support-btn');
+        const footerSupportBtn = document.getElementById('footer-support-btn');
+        const supportModal = document.getElementById('support-modal');
+        const closeSupportBtn = document.getElementById('close-support');
+        const chatInput = document.getElementById('chat-input');
+        const sendChatBtn = document.getElementById('send-chat-btn');
+        const chatContainer = document.getElementById('chat-container');
+        const gameIframeModal = document.getElementById('game-iframe-modal');
+        const gameIframe = document.getElementById('game-iframe');
+        const closeGameBtn = document.getElementById('close-game-btn');
+        const titleWarning = document.getElementById('title-warning');
+        const descWarning = document.getElementById('desc-warning');
+
+        // Current game for reviews
+        let currentGameId = null;
+        let searchQuery = "";
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        function initApp() {
+            // Check if user is logged in
+            updateUIForUser();
+            
+            // Render games
+            renderGames();
+            renderLibrary();
+            updateProfileDisplay();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Setup auth tabs
+            setupAuthTabs();
+            
+            // Setup main tabs
+            setupMainTabs();
+            
+            // If admin, render admin panels
+            if (currentUser && currentUser.isAdmin) {
+                renderModerationQueue();
+                renderUsersList();
+                adminTab.style.display = 'block';
+            }
+            
+            // Setup real-time validation for bad words
+            setupBadWordsValidation();
+        }
+
+        function setupBadWordsValidation() {
+            const gameTitle = document.getElementById('game-title');
+            const gameDescription = document.getElementById('game-description');
+            
+            gameTitle.addEventListener('input', function() {
+                if (containsBadWords(this.value)) {
+                    titleWarning.style.display = 'block';
+                } else {
+                    titleWarning.style.display = 'none';
+                }
+            });
+            
+            gameDescription.addEventListener('input', function() {
+                if (containsBadWords(this.value)) {
+                    descWarning.style.display = 'block';
+                } else {
+                    descWarning.style.display = 'none';
+                }
+            });
+        }
+
+        function setupEventListeners() {
+            // File uploads
+            fileUploadArea.addEventListener('click', () => gameFilesInput.click());
+            gameFilesInput.addEventListener('change', handleFileSelect);
+            
+            imageUploadArea.addEventListener('click', () => gameImageInput.click());
+            gameImageInput.addEventListener('change', handleImageSelect);
+            
+            avatarUploadArea.addEventListener('click', () => avatarFileInput.click());
+            avatarFileInput.addEventListener('change', handleAvatarSelect);
+            
+            // Forms
+            uploadForm.addEventListener('submit', handleUploadSubmit);
+            
+            // Auth
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            document.getElementById('register-form').addEventListener('submit', handleRegister);
+            
+            // Profile
+            profileForm.addEventListener('submit', handleProfileUpdate);
+            
+            // Modals
+            closeModalBtn.addEventListener('click', () => gameModal.style.display = 'none');
+            modalCloseBtn.addEventListener('click', () => gameModal.style.display = 'none');
+            modalDownloadBtn.addEventListener('click', downloadGame);
+            modalPlayBtn.addEventListener('click', playGame);
+            
+            closeAuthBtn.addEventListener('click', () => authModal.style.display = 'none');
+            closeProfileBtn.addEventListener('click', () => profileModal.style.display = 'none');
+            
+            // User actions
+            userProfileBtn.addEventListener('click', toggleAuthModal);
+            editProfileBtn.addEventListener('click', () => profileModal.style.display = 'flex');
+            
+            // Reviews
+            document.getElementById('submit-review').addEventListener('click', submitReview);
+            
+            // Search
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') performSearch();
+            });
+            
+            // Cart
+            cartBtn.addEventListener('click', () => {
+                showNotification("Вы надеялись здесь что-либо купить или пополнить баланс? Но у нас здесь всё бесплатно!", "info");
+            });
+            
+            // Support
+            supportBtn.addEventListener('click', () => supportModal.style.display = 'flex');
+            footerSupportBtn.addEventListener('click', () => supportModal.style.display = 'flex');
+            closeSupportBtn.addEventListener('click', () => supportModal.style.display = 'none');
+            sendChatBtn.addEventListener('click', sendChatMessage);
+            chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') sendChatMessage();
+            });
+            
+            // Game iframe
+            closeGameBtn.addEventListener('click', () => {
+                gameIframeModal.style.display = 'none';
+                gameIframe.src = '';
+            });
+            
+            // Close modals when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === gameModal) gameModal.style.display = 'none';
+                if (e.target === authModal) authModal.style.display = 'none';
+                if (e.target === profileModal) profileModal.style.display = 'none';
+                if (e.target === supportModal) supportModal.style.display = 'none';
+                if (e.target === gameIframeModal) {
+                    gameIframeModal.style.display = 'none';
+                    gameIframe.src = '';
+                }
+            });
+        }
+
+        function setupAuthTabs() {
+            const authTabs = document.querySelectorAll('.auth-tab');
+            const authForms = document.querySelectorAll('.auth-form');
+            
+            authTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const formId = tab.getAttribute('data-form');
+                    
+                    authTabs.forEach(t => t.classList.remove('active'));
+                    authForms.forEach(f => f.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${formId}-form`).classList.add('active');
+                });
+            });
+        }
+
+        function setupMainTabs() {
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const tabId = tab.getAttribute('data-tab');
+                    
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(`${tabId}-tab`).classList.add('active');
+                    
+                    // Special handling for admin tab
+                    if (tabId === 'admin' && currentUser && currentUser.isAdmin) {
+                        renderModerationQueue();
+                        renderUsersList();
+                    }
+                });
+            });
+        }
+
+        function updateUIForUser() {
+            const usernameSpan = document.getElementById('username');
+            const userAvatar = document.getElementById('user-avatar');
+            const adminBadge = document.getElementById('admin-badge');
+            const mainCta = document.getElementById('main-cta');
+            
+            if (currentUser) {
+                usernameSpan.textContent = currentUser.username;
+                userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                
+                if (currentUser.avatar) {
+                    userAvatar.style.backgroundImage = `url(${currentUser.avatar})`;
+                    userAvatar.textContent = '';
+                }
+                
+                if (currentUser.isAdmin) {
+                    adminBadge.style.display = 'inline';
+                    adminTab.style.display = 'block';
+                } else {
+                    adminBadge.style.display = 'none';
+                    adminTab.style.display = 'none';
+                }
+                
+                mainCta.textContent = `Добро пожаловать, ${currentUser.username}!`;
+                document.querySelectorAll('.tab').forEach(tab => tab.style.display = 'block');
+            } else {
+                usernameSpan.textContent = 'Гость';
+                userAvatar.textContent = 'G';
+                userAvatar.style.backgroundImage = '';
+                adminBadge.style.display = 'none';
+                adminTab.style.display = 'none';
+                mainCta.textContent = 'Войти или зарегистрироваться';
+                
+                // Hide tabs that require login
+                document.querySelectorAll('.tab').forEach(tab => {
+                    if (tab.getAttribute('data-tab') !== 'games') {
+                        tab.style.display = 'none';
+                    }
+                });
+            }
+        }
+
+        function renderGames(filteredGames = null) {
+            gamesGrid.innerHTML = '';
+            
+            let gamesToRender = filteredGames || games.filter(game => game.status === 'approved');
+            
+            if (gamesToRender.length === 0) {
+                gamesGrid.innerHTML = '<div class="no-games">' + 
+                    (searchQuery ? `По запросу "${searchQuery}" ничего не найдено` : 'Пока нет одобренных игр. Будьте первым!') + 
+                    '</div>';
+                return;
+            }
+            
+            gamesToRender.forEach(game => {
+                const isDownloaded = currentUser && downloadedGames[currentUser.id] && 
+                                     downloadedGames[currentUser.id].includes(game.id);
+                
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <div class="game-image" style="background-image: url('${game.image || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80'}')">
+                        <i class="${game.icon || 'fas fa-gamepad'}" style="${game.image ? 'display: none' : ''}"></i>
+                        ${isDownloaded ? '<div class="game-status approved"><i class="fas fa-check"></i> Установлено</div>' : ''}
+                    </div>
+                    <div class="game-info">
+                        <h3 class="game-title">${game.title}</h3>
+                        <p class="game-description">${game.description}</p>
+                        <div class="game-meta">
+                            <div class="game-author"><i class="fas fa-user"></i> ${game.author}</div>
+                            <div class="game-rating">${getStarRating(game.rating)}</div>
+                        </div>
+                        <div class="game-actions">
+                            ${isDownloaded && game.isWebGame ? 
+                                `<button class="btn btn-play" data-id="${game.id}"><i class="fas fa-play"></i> Играть</button>` : 
+                                `<button class="btn btn-download" data-id="${game.id}"><i class="fas fa-download"></i> Скачать</button>`
+                            }
+                            <button class="btn btn-details" data-id="${game.id}"><i class="fas fa-info-circle"></i> Подробнее</button>
+                        </div>
+                    </div>
+                `;
+                
+                gamesGrid.appendChild(gameCard);
+            });
+            
+            // Add event listeners
+            document.querySelectorAll('.btn-download').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    startDownload(gameId);
+                });
+            });
+            
+            document.querySelectorAll('.btn-play').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    playGame(gameId);
+                });
+            });
+            
+            document.querySelectorAll('.btn-details').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    showGameDetails(gameId);
+                });
+            });
+        }
+
+        function performSearch() {
+            searchQuery = searchInput.value.trim().toLowerCase();
+            
+            if (!searchQuery) {
+                renderGames();
+                return;
+            }
+            
+            const filteredGames = games.filter(game => 
+                game.status === 'approved' && (
+                    game.title.toLowerCase().includes(searchQuery) ||
+                    game.description.toLowerCase().includes(searchQuery) ||
+                    game.author.toLowerCase().includes(searchQuery) ||
+                    game.category.toLowerCase().includes(searchQuery)
+                )
+            );
+            
+            renderGames(filteredGames);
+            
+            if (filteredGames.length > 0) {
+                showNotification(`Найдено ${filteredGames.length} игр по запросу "${searchQuery}"`, "info");
+            }
+        }
+
+        function renderLibrary() {
+            libraryContent.innerHTML = '';
+            
+            if (!currentUser) {
+                libraryContent.innerHTML = '<div class="no-games">Войдите в систему, чтобы видеть свои игры</div>';
+                return;
+            }
+            
+            const userDownloads = downloadedGames[currentUser.id] || [];
+            const downloadedGamesData = games.filter(game => userDownloads.includes(game.id));
+            
+            if (downloadedGamesData.length === 0) {
+                libraryContent.innerHTML = '<div class="no-games">У вас пока нет скачанных игр. Найдите интересную игру и скачайте её!</div>';
+                return;
+            }
+            
+            downloadedGamesData.forEach(game => {
+                const gameElement = document.createElement('div');
+                gameElement.className = 'downloaded-game';
+                gameElement.innerHTML = `
+                    <div class="downloaded-game-info">
+                        <div class="downloaded-game-image" style="background-image: url('${game.image || ''}')">
+                            ${!game.image ? `<i class="${game.icon || 'fas fa-gamepad'}"></i>` : ''}
+                        </div>
+                        <div>
+                            <h3>${game.title}</h3>
+                            <p><i class="fas fa-tag"></i> ${game.category} • <i class="fas fa-hdd"></i> ${game.size}</p>
+                            <p><i class="fas fa-download"></i> Загружено: ${game.downloads} раз</p>
+                        </div>
+                    </div>
+                    <div>
+                        ${game.isWebGame ? 
+                            `<button class="btn btn-play" data-id="${game.id}"><i class="fas fa-play"></i> Играть</button>` : 
+                            `<button class="btn btn-download" data-id="${game.id}"><i class="fas fa-redo"></i> Переустановить</button>`
+                        }
+                    </div>
+                `;
+                
+                libraryContent.appendChild(gameElement);
+            });
+            
+            // Add event listeners
+            libraryContent.querySelectorAll('.btn-download, .btn-play').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    const game = games.find(g => g.id === gameId);
+                    
+                    if (game.isWebGame) {
+                        playGame(gameId);
+                    } else {
+                        downloadGameFile(gameId);
+                    }
+                });
+            });
+        }
+
+        function updateProfileDisplay() {
+            if (!currentUser) return;
+            
+            const profileName = document.getElementById('profile-name');
+            const profileBio = document.getElementById('profile-bio');
+            const profileAvatar = document.getElementById('profile-avatar-large');
+            const profileStats = document.getElementById('profile-stats');
+            
+            profileName.textContent = currentUser.username;
+            profileBio.textContent = currentUser.bio || 'Нет описания';
+            
+            if (currentUser.avatar) {
+                profileAvatar.style.backgroundImage = `url(${currentUser.avatar})`;
+                profileAvatar.textContent = '';
+            } else {
+                profileAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                profileAvatar.style.backgroundImage = '';
+            }
+            
+            // Calculate stats
+            const uploadedCount = games.filter(g => g.author === currentUser.username).length;
+            const reviewCount = reviews.filter(r => r.userId === currentUser.id).length;
+            
+            profileStats.textContent = `Игр загружено: ${uploadedCount} | Отзывов: ${reviewCount}`;
+            
+            // Render user reviews
+            renderUserReviews();
+        }
+
+        function renderUserReviews() {
+            userReviews.innerHTML = '';
+            
+            const userReviewList = reviews.filter(r => r.userId === currentUser.id);
+            
+            if (userReviewList.length === 0) {
+                userReviews.innerHTML = '<div class="no-games">Вы еще не оставляли отзывы</div>';
+                return;
+            }
+            
+            userReviewList.forEach(review => {
+                const game = games.find(g => g.id === review.gameId);
+                if (!game) return;
+                
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review';
+                reviewElement.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-author"><i class="fas fa-gamepad"></i> Игра: ${game.title}</div>
+                        <div class="review-rating">${getStarRating(review.rating)}</div>
+                    </div>
+                    <p>${review.text}</p>
+                    <small>${new Date(review.date).toLocaleDateString('ru-RU')}</small>
+                `;
+                
+                userReviews.appendChild(reviewElement);
+            });
+        }
+
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const fileName = files[0].name;
+                const fileSize = files[0].size;
+                
+                // Проверка типа файла
+                if (!fileName.endsWith('.html') && !fileName.endsWith('.zip')) {
+                    showNotification('Поддерживаются только файлы .html и .zip', 'error');
+                    gameFilesInput.value = '';
+                    return;
+                }
+                
+                // Проверка размера файла (макс 50MB)
+                if (fileSize > 50 * 1024 * 1024) {
+                    showNotification('Файл слишком большой (максимум 50MB)', 'error');
+                    gameFilesInput.value = '';
+                    return;
+                }
+                
+                fileUploadArea.innerHTML = `
+                    <i class="fas fa-check-circle"></i>
+                    <p>Выбран файл: ${fileName}</p>
+                    <p><small>Размер: ${formatFileSize(fileSize)}</small></p>
+                `;
+                fileUploadArea.style.borderColor = "var(--success)";
+            }
+        }
+
+        function handleImageSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imageUploadArea.innerHTML = `
+                        <img src="${event.target.result}" style="max-width: 100px; max-height: 100px; border-radius: 8px;" />
+                        <p>Изображение загружено</p>
+                    `;
+                    imageUploadArea.style.borderColor = "var(--success)";
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        }
+
+        function handleAvatarSelect(e) {
+            const files = e.target.files;
+            if (files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    avatarUploadArea.innerHTML = `
+                        <img src="${event.target.result}" style="max-width: 100px; max-height: 100px; border-radius: 50%;" />
+                        <p>Аватар загружен</p>
+                    `;
+                    avatarUploadArea.style.borderColor = "var(--success)";
+                };
+                reader.readAsDataURL(files[0]);
+            }
+        }
+
+        function handleUploadSubmit(e) {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showNotification('Войдите в систему, чтобы загружать игры', 'error');
+                return;
+            }
+            
+            const title = document.getElementById('game-title').value.trim();
+            const description = document.getElementById('game-description').value.trim();
+            const category = document.getElementById('game-category').value;
+            const files = gameFilesInput.files;
+            
+            // Проверка на плохие слова
+            if (containsBadWords(title)) {
+                showNotification('Название содержит недопустимые слова', 'error');
+                titleWarning.style.display = 'block';
+                return;
+            }
+            
+            if (containsBadWords(description)) {
+                showNotification('Описание содержит недопустимые слова', 'error');
+                descWarning.style.display = 'block';
+                return;
+            }
+            
+            if (!title || !description || !category || files.length === 0) {
+                showNotification('Пожалуйста, заполните все поля и выберите файл игры', 'error');
+                return;
+            }
+            
+            // Get image if uploaded
+            let imageData = '';
+            if (gameImageInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imageData = event.target.result;
+                    completeUpload(title, description, category, files, imageData);
+                };
+                reader.readAsDataURL(gameImageInput.files[0]);
+            } else {
+                completeUpload(title, description, category, files, '');
+            }
+        }
+
+        function completeUpload(title, description, category, files, imageData) {
+            // Read game file content
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                let gameContent = '';
+                let isWebGame = false;
+                
+                if (files[0].name.endsWith('.html')) {
+                    gameContent = event.target.result;
+                    isWebGame = true;
+                } else if (files[0].name.endsWith('.zip')) {
+                    // Для ZIP файлов сохраняем как есть
+                    gameContent = 'ZIP_FILE_CONTENT';
+                    isWebGame = false;
+                }
+                
+                // Create new game object
+                const newGame = {
+                    id: Date.now(),
+                    title,
+                    description,
+                    author: currentUser.username,
+                    rating: 0,
+                    category,
+                    size: formatFileSize(files[0].size),
+                    downloads: 0,
+                    icon: getIconByCategory(category),
+                    image: imageData,
+                    status: currentUser.isAdmin ? 'approved' : 'pending',
+                    isWebGame: isWebGame,
+                    gameFile: files[0].name,
+                    fileContent: gameContent,
+                    uploadDate: new Date().toISOString()
+                };
+                
+                // Add to games array
+                games.push(newGame);
+                saveData();
+                
+                // Update UI
+                showNotification(`Игра "${title}" успешно отправлена на модерацию!`);
+                
+                if (currentUser.isAdmin) {
+                    renderGames();
+                }
+                
+                // Update admin panel if admin
+                if (currentUser.isAdmin) {
+                    renderModerationQueue();
+                }
+                
+                // Reset form
+                uploadForm.reset();
+                fileUploadArea.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p>Перетащите файлы игры сюда или нажмите для выбора</p>
+                    <p><small>Поддерживаются: .html, .zip (макс. 50MB)</small></p>
+                `;
+                fileUploadArea.style.borderColor = "#3d4c5e";
+                
+                imageUploadArea.innerHTML = `
+                    <i class="fas fa-image"></i>
+                    <p>Загрузите изображение для игры</p>
+                    <p><small>Поддерживаются: .jpg, .png, .gif (макс. 5MB)</small></p>
+                `;
+                imageUploadArea.style.borderColor = "#3d4c5e";
+                
+                // Reset warnings
+                titleWarning.style.display = 'none';
+                descWarning.style.display = 'none';
+                
+                // Update profile stats
+                updateProfileDisplay();
+            };
+            
+            reader.readAsText(files[0]);
+        }
+
+        function showGameDetails(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+            
+            currentGameId = gameId;
+            
+            document.getElementById('modal-game-title').textContent = game.title;
+            document.getElementById('modal-game-author').textContent = `Автор: ${game.author}`;
+            document.getElementById('modal-game-rating').textContent = `Рейтинг: ${getStarRating(game.rating)}`;
+            document.getElementById('modal-game-description').textContent = game.description;
+            document.getElementById('modal-game-category').textContent = `Категория: ${game.category}`;
+            document.getElementById('modal-game-size').textContent = `Размер: ${game.size}`;
+            document.getElementById('modal-game-downloads').textContent = `Загрузок: ${game.downloads}`;
+            
+            // Set download button data-id
+            modalDownloadBtn.setAttribute('data-id', game.id);
+            modalPlayBtn.setAttribute('data-id', game.id);
+            
+            // Show/hide play button
+            modalPlayBtn.style.display = game.isWebGame ? 'block' : 'none';
+            
+            // Load reviews for this game
+            loadGameReviews(gameId);
+            
+            // Show modal
+            gameModal.style.display = 'flex';
+        }
+
+        function loadGameReviews(gameId) {
+            const gameReviews = reviews.filter(r => r.gameId === gameId);
+            const reviewsContainer = document.getElementById('game-reviews');
+            
+            reviewsContainer.innerHTML = '';
+            
+            if (gameReviews.length === 0) {
+                reviewsContainer.innerHTML = '<div class="no-games">Пока нет отзывов. Будьте первым!</div>';
+                return;
+            }
+            
+            gameReviews.forEach(review => {
+                const user = users.find(u => u.id === review.userId);
+                if (!user) return;
+                
+                const reviewElement = document.createElement('div');
+                reviewElement.className = 'review';
+                reviewElement.innerHTML = `
+                    <div class="review-header">
+                        <div class="review-author">${user.username}</div>
+                        <div class="review-rating">${getStarRating(review.rating)}</div>
+                    </div>
+                    <p>${review.text}</p>
+                    <small>${new Date(review.date).toLocaleDateString('ru-RU')}</small>
+                `;
+                
+                reviewsContainer.appendChild(reviewElement);
+            });
+        }
+
+        function startDownload(gameId) {
+            if (!currentUser) {
+                showNotification('Войдите в систему, чтобы скачивать игры', 'error');
+                return;
+            }
+            
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+            
+            // Update downloads count
+            game.downloads++;
+            
+            // Add to user's downloaded games
+            if (!downloadedGames[currentUser.id]) {
+                downloadedGames[currentUser.id] = [];
+            }
+            
+            if (!downloadedGames[currentUser.id].includes(gameId)) {
+                downloadedGames[currentUser.id].push(gameId);
+            }
+            
+            saveData();
+            
+            // Download the game file
+            downloadGameFile(gameId);
+            
+            // Update UI
+            setTimeout(() => {
+                renderGames();
+                renderLibrary();
+            }, 1000);
+        }
+
+        function playGame(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game || !game.isWebGame) return;
+            
+            // Если игра уже скачана, открываем её
+            if (currentUser && downloadedGames[currentUser.id] && downloadedGames[currentUser.id].includes(gameId)) {
+                // Создаем blob из содержимого игры
+                const blob = new Blob([game.fileContent], {type: 'text/html'});
+                const url = URL.createObjectURL(blob);
+                
+                // Открываем игру в iframe
+                gameIframe.src = url;
+                gameIframeModal.style.display = 'flex';
+                showNotification(`Игра "${game.title}" запущена!`);
+            } else {
+                showNotification('Сначала скачайте игру', 'warning');
+            }
+        }
+
+        function downloadGameFile(gameId) {
+            const game = games.find(g => g.id === gameId);
+            if (!game) return;
+            
+            showNotification(`Скачивание игры "${game.title}"...`);
+            
+            if (game.isWebGame && game.fileContent) {
+                // Создаем файл для скачивания
+                const blob = new Blob([game.fileContent], {type: 'text/html'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = game.gameFile || 'game.html';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                
+                setTimeout(() => {
+                    showNotification(`Игра "${game.title}" успешно скачана!`);
+                }, 1000);
+            } else {
+                // Для ZIP файлов или игр без содержимого
+                const a = document.createElement('a');
+                a.href = '#';
+                a.download = game.gameFile || 'game.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                
+                setTimeout(() => {
+                    showNotification(`Файл игры "${game.title}" успешно скачан!`);
+                }, 1000);
+            }
+        }
+
+        function downloadGame() {
+            const gameId = parseInt(modalDownloadBtn.getAttribute('data-id'));
+            startDownload(gameId);
+            gameModal.style.display = 'none';
+        }
+
+        function toggleAuthModal() {
+            if (currentUser) {
+                // If logged in, show profile tab
+                document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                document.querySelector('.tab[data-tab="profile"]').classList.add('active');
+                document.getElementById('profile-tab').classList.add('active');
+            } else {
+                authModal.style.display = 'flex';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            const user = users.find(u => u.username === username && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                
+                showNotification(`Добро пожаловать, ${username}!`);
+                authModal.style.display = 'none';
+                
+                updateUIForUser();
+                renderGames();
+                renderLibrary();
+                updateProfileDisplay();
+                
+                // Reset form
+                e.target.reset();
+            } else {
+                showNotification('Неверное имя пользователя или пароль', 'error');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('register-username').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm').value;
+            
+            // Check for bad words in username
+            if (containsBadWords(username)) {
+                showNotification('Имя пользователя содержит запрещенные слова', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showNotification('Пароли не совпадают', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showNotification('Пароль должен быть не менее 6 символов', 'error');
+                return;
+            }
+            
+            // Check if username already exists
+            if (users.find(u => u.username === username)) {
+                showNotification('Имя пользователя уже занято', 'error');
+                return;
+            }
+            
+            // Check for admin username (секретное слово "Игронафт")
+            const isAdmin = username === "Игронафт";
+            
+            const newUser = {
+                id: Date.now(),
+                username,
+                password,
+                isAdmin,
+                avatar: "",
+                bio: "",
+                uploadedGames: [],
+                downloadedGames: [],
+                reviews: []
+            };
+            
+            users.push(newUser);
+            currentUser = newUser;
+            
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            
+            showNotification(`Аккаунт успешно создан! ${isAdmin ? 'Вы вошли как администратор.' : ''}`);
+            authModal.style.display = 'none';
+            
+            updateUIForUser();
+            renderGames();
+            renderLibrary();
+            updateProfileDisplay();
+            
+            // Reset form
+            e.target.reset();
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            
+            const newName = document.getElementById('edit-name').value;
+            const newBio = document.getElementById('edit-bio').value;
+            
+            // Check for bad words
+            if (containsBadWords(newName) || containsBadWords(newBio)) {
+                showNotification('Текст содержит запрещенные слова', 'error');
+                return;
+            }
+            
+            // Check if avatar was uploaded
+            if (avatarFileInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    currentUser.avatar = event.target.result;
+                    completeProfileUpdate(newName, newBio);
+                };
+                reader.readAsDataURL(avatarFileInput.files[0]);
+            } else {
+                completeProfileUpdate(newName, newBio);
+            }
+        }
+
+        function completeProfileUpdate(newName, newBio) {
+            // Update user info
+            currentUser.username = newName;
+            currentUser.bio = newBio;
+            
+            // Update in users array
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+            }
+            
+            saveData();
+            
+            showNotification('Профиль успешно обновлен!');
+            profileModal.style.display = 'none';
+            
+            updateUIForUser();
+            updateProfileDisplay();
+            renderGames();
+        }
+
+        function submitReview() {
+            if (!currentUser) {
+                showNotification('Войдите в систему, чтобы оставлять отзывы', 'error');
+                return;
+            }
+            
+            const reviewText = document.getElementById('review-text').value;
+            const rating = parseInt(document.getElementById('review-rating').value);
+            
+            if (!reviewText.trim()) {
+                showNotification('Введите текст отзыва', 'error');
+                return;
+            }
+            
+            // Check for bad words
+            if (containsBadWords(reviewText)) {
+                showNotification('Отзыв содержит запрещенные слова', 'error');
+                return;
+            }
+            
+            const newReview = {
+                id: Date.now(),
+                gameId: currentGameId,
+                userId: currentUser.id,
+                text: reviewText,
+                rating: rating,
+                date: new Date().toISOString()
+            };
+            
+            reviews.push(newReview);
+            saveData();
+            
+            // Update game rating
+            const gameReviews = reviews.filter(r => r.gameId === currentGameId);
+            const averageRating = gameReviews.reduce((sum, r) => sum + r.rating, 0) / gameReviews.length;
+            
+            const gameIndex = games.findIndex(g => g.id === currentGameId);
+            if (gameIndex !== -1) {
+                games[gameIndex].rating = parseFloat(averageRating.toFixed(1));
+            }
+            
+            saveData();
+            
+            showNotification('Отзыв успешно добавлен!');
+            
+            // Clear form and reload reviews
+            document.getElementById('review-text').value = '';
+            loadGameReviews(currentGameId);
+            updateProfileDisplay();
+        }
+
+        function renderModerationQueue() {
+            moderationQueue.innerHTML = '';
+            
+            const pendingGames = games.filter(game => game.status === 'pending');
+            
+            if (pendingGames.length === 0) {
+                moderationQueue.innerHTML = '<div class="no-games">Нет игр, ожидающих модерации</div>';
+                return;
+            }
+            
+            pendingGames.forEach(game => {
+                const gameElement = document.createElement('div');
+                gameElement.className = 'moderation-game';
+                gameElement.innerHTML = `
+                    <h3>${game.title}</h3>
+                    <p><strong>Автор:</strong> ${game.author}</p>
+                    <p><strong>Категория:</strong> ${game.category}</p>
+                    <p><strong>Описание:</strong> ${game.description.substring(0, 150)}...</p>
+                    <p><strong>Дата загрузки:</strong> ${new Date(game.uploadDate).toLocaleDateString('ru-RU')}</p>
+                    <div class="game-actions">
+                        <button class="btn btn-admin approve-btn" data-id="${game.id}"><i class="fas fa-check"></i> Одобрить</button>
+                        <button class="btn btn-admin reject-btn" data-id="${game.id}"><i class="fas fa-times"></i> Отклонить</button>
+                        <button class="btn btn-details" data-id="${game.id}"><i class="fas fa-eye"></i> Просмотреть</button>
+                    </div>
+                `;
+                
+                moderationQueue.appendChild(gameElement);
+            });
+            
+            // Add event listeners for moderation buttons
+            moderationQueue.querySelectorAll('.approve-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    moderateGame(gameId, 'approved');
+                });
+            });
+            
+            moderationQueue.querySelectorAll('.reject-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    moderateGame(gameId, 'rejected');
+                });
+            });
+            
+            moderationQueue.querySelectorAll('.btn-details').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const gameId = parseInt(this.getAttribute('data-id'));
+                    showGameDetails(gameId);
+                });
+            });
+        }
+
+        function renderUsersList() {
+            usersList.innerHTML = '';
+            
+            users.forEach(user => {
+                const userElement = document.createElement('div');
+                userElement.className = 'downloaded-game';
+                userElement.innerHTML = `
+                    <div class="downloaded-game-info">
+                        <div class="downloaded-game-image" style="background-image: url('${user.avatar || ''}'); border-radius: 50%;">
+                            ${!user.avatar ? user.username.charAt(0).toUpperCase() : ''}
+                        </div>
+                        <div>
+                            <h3>${user.username} ${user.isAdmin ? '<span class="admin-badge">ADMIN</span>' : ''}</h3>
+                            <p>${user.bio || 'Нет описания'}</p>
+                            <p><i class="fas fa-calendar"></i> Зарегистрирован: ${new Date(user.id).toLocaleDateString('ru-RU')}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-admin" data-id="${user.id}" onclick="toggleAdminStatus(${user.id})">
+                            ${user.isAdmin ? '<i class="fas fa-user-times"></i> Снять админа' : '<i class="fas fa-user-shield"></i> Назначить админом'}
+                        </button>
+                    </div>
+                `;
+                
+                usersList.appendChild(userElement);
+            });
+        }
+
+        function moderateGame(gameId, status) {
+            const gameIndex = games.findIndex(g => g.id === gameId);
+            if (gameIndex === -1) return;
+            
+            games[gameIndex].status = status;
+            saveData();
+            
+            const action = status === 'approved' ? 'одобрена' : 'отклонена';
+            showNotification(`Игра "${games[gameIndex].title}" ${action}`);
+            
+            // Update UI
+            renderModerationQueue();
+            if (status === 'approved') {
+                renderGames();
+            }
+        }
+
+        function sendChatMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+            
+            // Add user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'chat-message user';
+            userMessage.innerHTML = `<strong>Вы:</strong> ${message}`;
+            chatContainer.appendChild(userMessage);
+            
+            // Clear input
+            chatInput.value = '';
+            
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            
+            // Bot response
+            setTimeout(() => {
+                const responses = [
+                    "Спасибо за сообщение! Мы ответим вам в ближайшее время.",
+                    "Ваш вопрос принят в обработку.",
+                    "По этому вопросу обратитесь в раздел FAQ.",
+                    "Мы уже работаем над решением этой проблемы.",
+                    "Спасибо за обратную связь! Это поможет нам улучшить сервис."
+                ];
+                
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-message bot';
+                botMessage.innerHTML = `<strong>Бот поддержки:</strong> ${randomResponse}`;
+                chatContainer.appendChild(botMessage);
+                
+                // Scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+        }
+
+        function showNotification(message, type = 'success') {
+            notification.textContent = message;
+            notification.className = 'notification';
+            notification.classList.add(type);
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Utility functions
+        function containsBadWords(text) {
+            const lowerText = text.toLowerCase();
+            // Убираем специальные символы для более точной проверки
+            const cleanText = lowerText.replace(/[^а-яa-z0-9\s]/g, ' ');
+            return badWords.some(word => {
+                const regex = new RegExp('\\b' + word + '\\b', 'i');
+                return regex.test(cleanText);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function getIconByCategory(category) {
+            const icons = {
+                'Аркада': 'fas fa-gamepad',
+                'Головоломка': 'fas fa-puzzle-piece',
+                'Платформер': 'fas fa-running',
+                'Стратегия': 'fas fa-chess',
+                'Ролевая': 'fas fa-dragon',
+                'Симулятор': 'fas fa-sim-card',
+                'Гонки': 'fas fa-car',
+                'Спорт': 'fas fa-futbol'
+            };
+            return icons[category] || 'fas fa-gamepad';
+        }
+
+        function getStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+            
+            return '★'.repeat(fullStars) + (halfStar ? '☆' : '') + '☆'.repeat(emptyStars);
+        }
+
+        function saveData() {
+            localStorage.setItem('games', JSON.stringify(games));
+            localStorage.setItem('users', JSON.stringify(users));
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('reviews', JSON.stringify(reviews));
+            localStorage.setItem('downloadedGames', JSON.stringify(downloadedGames));
+        }
+
+        // Expose function for HTML onclick
+        window.toggleAdminStatus = function(userId) {
+            if (!currentUser || !currentUser.isAdmin) return;
+            
+            const userIndex = users.findIndex(u => u.id === userId);
+            if (userIndex === -1 || users[userIndex].id === currentUser.id) return;
+            
+            users[userIndex].isAdmin = !users[userIndex].isAdmin;
+            saveData();
+            
+            showNotification(`Права администратора ${users[userIndex].isAdmin ? 'выданы' : 'сняты'} для ${users[userIndex].username}`);
+            
+            renderUsersList();
+        };
+    </script>
+</body>
+</html>
